@@ -1,0 +1,18 @@
+spawn scp package.json root@185.110.188.77:~/order-dashboard/package.json
+root@185.110.188.77's password: 
+package.json                                                0%    0     0.0KB/s   --:-- ETApackage.json                                              100% 1055    19.9KB/s   00:00    
+spawn scp package-lock.json root@185.110.188.77:~/order-dashboard/package-lock.json
+root@185.110.188.77's password: 
+package-lock.json                                           0%    0     0.0KB/s   --:-- ETApackage-lock.json                                         100%  264KB 791.8KB/s   00:00    
+spawn scp lib/woocommerce.ts root@185.110.188.77:~/order-dashboard/lib/woocommerce.ts
+root@185.110.188.77's password: 
+woocommerce.ts                                              0%    0     0.0KB/s   --:-- ETAwoocommerce.ts                                            100% 3168    63.5KB/s   00:00    
+spawn scp lib/queue.ts root@185.110.188.77:~/order-dashboard/lib/queue.ts
+scp: stat local "lib/queue.ts": No such file or directory
+expect: spawn id exp9 not open
+    while executing
+"expect eof"
+    (procedure "upload_file" line 9)
+    invoked from within
+"upload_file "lib/queue.ts" "$remote_dir/lib/queue.ts""
+    (file "./deploy_repair_final.exp" line 24)

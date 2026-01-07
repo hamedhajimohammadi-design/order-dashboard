@@ -1,0 +1,45 @@
+#!/usr/bin/expect -f
+
+set timeout 600
+set host "185.110.188.77"
+set user "root"
+set password "jdh5kl5txZsr6gDB"
+set remote_dir "~/order-dashboard"
+
+# Ensure directories exist
+spawn ssh $user@$host "mkdir -p $remote_dir/app/api/telegram $remote_dir/app/api/cron/fix-sync $remote_dir/app/api/supervisor/sync-completed $remote_dir/lib $remote_dir/store $remote_dir/app/api/orders"
+expect {
+    "password:" { send "$password\r"; exp_continue }
+    eof
+}
+
+# Upload specific files
+proc upload_file {local_path remote_path} {
+    global host user password
+    spawn scp $local_path $user@$host:$remote_path
+    expect {
+        "password:" { send "$password\r" }
+        "(yes/no" { send "yes\r"; exp_continue }
+        timeout { puts "Timeout uploading $local_path"; exit 1 }
+    }
+    expect eof
+}
+
+upload_file "lib/telegram.ts" "$remote_dir/lib/telegram.ts"
+upload_file "app/api/telegram/route.ts" "$remote_dir/app/api/telegram/route.ts"
+upload_file "app/api/cron/fix-sync/route.ts" "$remote_dir/app/api/cron/fix-sync/route.ts"
+upload_file "app/api/supervisor/sync-completed/route.ts" "$remote_dir/app/api/supervisor/sync-completed/route.ts"
+upload_file "app/api/orders/route.js" "$remote_dir/app/api/orders/route.js"
+upload_file "store/useOrderStore.js" "$remote_dir/store/useOrderStore.js"
+
+puts "Files uploaded successfully."
+
+# Run build
+spawn ssh $user@$host "cd $remote_dir && npm run build && pm2 reload all"
+expect {
+    "password:" { send "$password\r"; exp_continue }
+    "Creating an optimized production build" { puts "Build started..."; exp_continue }
+    "Compiled successfully" { puts "Build successful!"; exp_continue }
+    timeout { puts "Timeout waiting for build"; exit 1 }
+    eof
+}

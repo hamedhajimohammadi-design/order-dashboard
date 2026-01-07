@@ -1,0 +1,61 @@
+spawn scp package.json root@185.110.188.77:~/order-dashboard/package.json
+root@185.110.188.77's password: 
+package.json                                                0%    0     0.0KB/s   --:-- ETApackage.json                                              100% 1055    20.9KB/s   00:00    
+spawn scp package-lock.json root@185.110.188.77:~/order-dashboard/package-lock.json
+root@185.110.188.77's password: 
+package-lock.json                                           0%    0     0.0KB/s   --:-- ETApackage-lock.json                                         100%  264KB 870.6KB/s   00:00    
+spawn scp lib/woocommerce.ts root@185.110.188.77:~/order-dashboard/lib/woocommerce.ts
+root@185.110.188.77's password: 
+woocommerce.ts                                              0%    0     0.0KB/s   --:-- ETAwoocommerce.ts                                            100% 3168    54.7KB/s   00:00    
+spawn scp lib/queue.ts root@185.110.188.77:~/order-dashboard/lib/queue.ts
+root@185.110.188.77's password: 
+queue.ts                                                    0%    0     0.0KB/s   --:-- ETAqueue.ts                                                  100%   76     1.5KB/s   00:00    
+spawn scp lib/telegram-bot.ts root@185.110.188.77:~/order-dashboard/lib/telegram-bot.ts
+root@185.110.188.77's password: 
+telegram-bot.ts                                             0%    0     0.0KB/s   --:-- ETAtelegram-bot.ts                                           100%  121     2.3KB/s   00:00    
+Repair files uploaded.
+spawn ssh root@185.110.188.77 cd ~/order-dashboard && npm install && npm run build && pm2 reload all
+root@185.110.188.77's password: 
+
+up to date, audited 470 packages in 1s
+
+154 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> order-dashboard@0.1.0 build
+> next build
+
+⚠ `images.domains` is deprecated in favor of `images.remotePatterns`. Please update next.config.ts to protect your application from malicious users.
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /root/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /root/order-dashboard/package-lock.json
+
+▲ Next.js 16.1.1 (Turbopack)
+- Environments: .env
+- Experiments (use with caution):
+  · optimizePackageImports
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Build started...
+✓ Compiled successfully in 23.3s
+  Running TypeScript ...
+Build successful!
+Failed to compile.
+
+./app/api/cron/fix-sync/route.ts:56:21
+Type error: An expression of type 'void' cannot be tested for truthiness.
+
+[0m [90m 54 |[39m                 console[33m.[39mlog([32m`ð [Cron] Outgoing Fix: Order #${dbOrder.wp_order_id} (DB: ${dbOrder.status} -> WC: ${wcOrder.status})`[39m)[33m;[39m
+ [90m 55 |[39m                 [36mconst[39m success [33m=[39m [36mawait[39m updateWooCommerceStatus(dbOrder[33m.[39mwp_order_id[33m,[39m dbOrder[33m.[39mstatus)[33m;[39m
+[31m[1m>[22m[39m[90m 56 |[39m                 [36mif[39m (success) {
+ [90m    |[39m                     [31m[1m^[22m[39m
+ [90m 57 |[39m                     fixedCount[33m++[39m[33m;[39m
+ [90m 58 |[39m                     fixedOrders[33m.[39mpush([32m`OUT-${dbOrder.wp_order_id}`[39m)[33m;[39m
+ [90m 59 |[39m                 }[0m
+Next.js build worker exited with code: 1 and signal: null

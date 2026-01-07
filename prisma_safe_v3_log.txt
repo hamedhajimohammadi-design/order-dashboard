@@ -1,0 +1,153 @@
+spawn ssh root@185.110.188.77 mkdir -p ~/order-dashboard/prisma
+root@185.110.188.77's password: 
+spawn scp prisma/schema.prisma root@185.110.188.77:~/order-dashboard/prisma/schema.prisma
+root@185.110.188.77's password: 
+schema.prisma                                               0%    0     0.0KB/s   --:-- ETAschema.prisma                                             100% 6718    48.7KB/s   00:00    
+Schema uploaded safely.
+spawn ssh root@185.110.188.77 cat ~/order-dashboard/prisma/schema.prisma | grep referral_code
+root@185.110.188.77's password: 
+  referral_code     String?  @unique
+Verification successful
+spawn ssh root@185.110.188.77 cd ~/order-dashboard && npx prisma generate && npx prisma db push --accept-data-loss && npm run build && pm2 reload all
+root@185.110.188.77's password: 
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v5.16.0) to ./node_modules/@prisma/client in 177ms
+
+Start using Prisma Client in Node.js (See: https://pris.ly/d/client)
+```
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
+```
+or start using Prisma Client at the edge (See: https://pris.ly/d/accelerate)
+```
+import { PrismaClient } from '@prisma/client/edge'
+const prisma = new PrismaClient()
+```
+
+See other ways of importing Prisma Client: http://pris.ly/d/importing-client
+
+┌─────────────────────────────────────────────────────────────┐
+│  Deploying your app to serverless or edge functions?        │
+│  Try Prisma Accelerate for connection pooling and caching.  │
+│  https://pris.ly/cli/--accelerate                           │
+└───────────────────────────────────────Prisma generated
+──────────────────────┘
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "pgem_oms", schema "public" at "127.0.0.1:5433"
+
+ð  Your database is now in sync with your Prisma schema. Done in 87ms
+
+Running generate... (Use --skip-generate to skip the generators)
+[2K[1A[2K[GRunning generate... - Prisma Client
+[2K[1A[2K[G✔ Generated Prisma Client (v5.16.0) to ./node_modules/@prisma/client in 214ms
+
+Prisma generated
+
+> order-dashboard@0.1.0 build
+> next build
+
+⚠ `images.domains` is deprecated in favor of `images.remotePatterns`. Please update next.config.ts to protect your application from malicious users.
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /root/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /root/order-dashboard/package-lock.json
+
+▲ Next.js 16.1.1 (Turbopack)
+- Environments: .env
+- Experiments (use with caution):
+  · optimizePackageImports
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Build started...
+✓ Compiled successfully in 26.7s
+Build successful!
+  Running TypeScript ...
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/42) ...
+  Generating static pages using 1 worker (10/42) 
+  Generating static pages using 1 worker (20/42) 
+  Generating static pages using 1 worker (31/42) 
+✓ Generating static pages using 1 worker (42/42) in 385.0ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /admin/analytics
+├ ○ /admin/finance
+├ ƒ /admin/finance/expenses/add
+├ ○ /admin/marketing
+├ ○ /admin/settings
+├ ○ /admin/users
+├ ƒ /api/admin/analytics
+├ ƒ /api/admin/edit-order
+├ ƒ /api/admin/pin-order
+├ ƒ /api/admin/send-message
+├ ƒ /api/admin/settings/rules
+├ ƒ /api/admin/setup-webhook
+├ ƒ /api/admin/sync-order
+├ ƒ /api/admin/test-telegram
+├ ƒ /api/admin/toggle-status
+├ ƒ /api/admin/update-profile
+├ ƒ /api/admin/users/telegram-list
+├ ƒ /api/bot
+├ ƒ /api/cron/fix-sync
+├ ƒ /api/cron/reminders
+├ ƒ /api/cron/sync-recent
+├ ƒ /api/external/orders-status
+├ ƒ /api/external/receive-order
+├ ƒ /api/finance/affiliates
+├ ƒ /api/finance/discounts
+├ ƒ /api/finance/expenses
+├ ƒ /api/finance/margins
+├ ƒ /api/finance/margins/sync
+├ ƒ /api/finance/pnl
+├ ƒ /api/login
+├ ƒ /api/logout
+├ ƒ /api/me
+├ ƒ /api/my-active-orders
+├ ƒ /api/my-history
+├ ƒ /api/my-stats
+├ ƒ /api/notes
+├ ƒ /api/orders
+├ ƒ /api/orders/assign
+├ ƒ /api/orders/release
+├ ƒ /api/orders/search
+├ ƒ /api/orders/waiting
+├ ƒ /api/proxy-image
+├ ƒ /api/reports/marketing
+├ ƒ /api/supervisor/activity-logs
+├ ƒ /api/supervisor/live-status
+├ ƒ /api/supervisor/orders
+├ ƒ /api/supervisor/stats
+├ ƒ /api/supervisor/sync-completed
+├ ƒ /api/telegram
+├ ƒ /api/update-order
+├ ƒ /api/users
+├ ƒ /api/webhook/customer
+├ ƒ /api/webhook/support
+├ ƒ /api/webhook/telegram
+├ ƒ /api/webhook/woocommerce
+├ ƒ /api/webhooks/support
+├ ○ /history
+├ ○ /login
+├ ○ /order-dashboard
+├ ○ /supervisor
+└ ƒ /supervisor/queue
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Use --update-env to update environment variables
+[PM2] Applying action reloadProcessId on app [all](ids: [ 0 ])
+[PM2] [dashboard](0) ✓

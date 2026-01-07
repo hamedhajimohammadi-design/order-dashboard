@@ -1,0 +1,25 @@
+
+PrismaClientInitializationError: 
+Invalid `prisma.order.findMany()` invocation in
+/root/order-dashboard/scripts/export-remote-data.ts:10:39
+
+   7 async function main() {
+   8   try {
+   9     // 1. Fetch last 50 orders
+→ 10     const orders = await prisma.order.findMany(
+error: Environment variable not found: DATABASE_URL.
+  -->  schema.prisma:3
+   | 
+ 2 |   provider = "postgresql"
+ 3 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+    at _n.handleRequestError (/root/order-dashboard/node_modules/@prisma/client/runtime/library.js:122:7227)
+    at _n.handleAndLogRequestError (/root/order-dashboard/node_modules/@prisma/client/runtime/library.js:122:6235)
+    at _n.request (/root/order-dashboard/node_modules/@prisma/client/runtime/library.js:122:5919)
+    at async l (/root/order-dashboard/node_modules/@prisma/client/runtime/library.js:131:9116)
+    at async main (/root/order-dashboard/scripts/export-remote-data.ts:10:20) {
+  clientVersion: '5.16.0',
+  errorCode: undefined
+}

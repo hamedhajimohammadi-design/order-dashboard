@@ -1,0 +1,48 @@
+#!/usr/bin/expect -f
+
+set timeout 900
+set host "185.110.188.77"
+set user "root"
+set password "jdh5kl5txZsr6gDB"
+set remote_dir "~/order-dashboard"
+
+# Ensure dirs
+spawn ssh $user@$host "mkdir -p $remote_dir/app/api/chat/send $remote_dir/app/api/chat/history $remote_dir/app/api/webhook/goftino"
+expect {
+    "password:" { send "$password\r"; exp_continue }
+    eof
+}
+
+proc upload_file {local_path remote_subpath user host password remote_dir} {
+    spawn scp $local_path $user@$host:$remote_dir/$remote_subpath
+    expect {
+        "password:" { send "$password\r" }
+        "(yes/no" { send "yes\r"; exp_continue }
+        timeout { puts "Timeout uploading $local_path"; exit 1 }
+    }
+    expect eof
+}
+
+upload_file "drop_chat_table.js" "drop_chat_table.js" $user $host $password $remote_dir
+upload_file "prisma/schema.prisma" "prisma/schema.prisma" $user $host $password $remote_dir
+upload_file "lib/chat-service.ts" "lib/chat-service.ts" $user $host $password $remote_dir
+upload_file "lib/telegram-bot.ts" "lib/telegram-bot.ts" $user $host $password $remote_dir
+upload_file "app/api/chat/send/route.ts" "app/api/chat/send/route.ts" $user $host $password $remote_dir
+upload_file "app/api/chat/history/route.ts" "app/api/chat/history/route.ts" $user $host $password $remote_dir
+upload_file "app/api/webhook/telegram/route.ts" "app/api/webhook/telegram/route.ts" $user $host $password $remote_dir
+upload_file "app/api/webhook/goftino/route.ts" "app/api/webhook/goftino/route.ts" $user $host $password $remote_dir
+upload_file "components/UnifiedChatBox.js" "components/UnifiedChatBox.js" $user $host $password $remote_dir
+upload_file "components/FocusModal.js" "components/FocusModal.js" $user $host $password $remote_dir
+
+# Run drop script THEN push
+spawn ssh $user@$host "cd $remote_dir && node drop_chat_table.js && npx prisma db push --accept-data-loss && npm run build && pm2 reload all"
+expect {
+    "password:" { send "$password\r"; exp_continue }
+    "Rows before drop" { puts "Found existing rows"; exp_continue }
+    "Dropped chat tables" { puts "Tables Dropped"; exp_continue }
+    "The database is now in sync" { puts "DB synched"; exp_continue }
+    "Compiled successfully" { puts "Build OK"; exp_continue }
+    "Online" { puts "PM2 OK"; exp_continue }
+    timeout { puts "Timeout running commands"; exit 1 }
+    eof
+}

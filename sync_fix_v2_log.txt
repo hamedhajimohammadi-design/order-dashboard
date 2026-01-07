@@ -1,0 +1,42 @@
+spawn scp lib/sync-helper.ts root@185.110.188.77:~/order-dashboard/lib/sync-helper.ts
+root@185.110.188.77's password: 
+sync-helper.ts                                              0%    0     0.0KB/s   --:-- ETAsync-helper.ts                                            100%   11KB 191.1KB/s   00:00    
+Sync fix uploaded successfuly.
+spawn ssh root@185.110.188.77 cd ~/order-dashboard && npm run build && pm2 reload all
+root@185.110.188.77's password: 
+
+> order-dashboard@0.1.0 build
+> next build
+
+⚠ `images.domains` is deprecated in favor of `images.remotePatterns`. Please update next.config.ts to protect your application from malicious users.
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /root/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /root/order-dashboard/package-lock.json
+
+▲ Next.js 16.1.1 (Turbopack)
+- Environments: .env
+- Experiments (use with caution):
+  · optimizePackageImports
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Build started...
+✓ Compiled successfully in 25.8s
+Build successful!
+  Running TypeScript ...
+Failed to compile.
+
+./lib/telegram-bot.ts:63:69
+Type error: Expected 1 arguments, but got 2.
+
+[0m [90m 61 |[39m
+ [90m 62 |[39m       [36mif[39m ([[32m'waiting'[39m[33m,[39m [32m'processing'[39m][33m.[39mincludes(order[33m.[39mstatus)) {
+[31m[1m>[22m[39m[90m 63 |[39m         [36mconst[39m queueInfo [33m=[39m [36mawait[39m calculateOrderETA([33mString[39m(order[33m.[39mid)[33m,[39m order[33m.[39mcreated_at)[33m;[39m
+ [90m    |[39m                                                                     [31m[1m^[22m[39m
+ [90m 64 |[39m         [36mif[39m (queueInfo) {
+ [90m 65 |[39m           msg [33m+=[39m [32m`\n\n⏳ **نوبت تخمینی: ${queueInfo.eta}**`[39m[33m;[39m
+ [90m 66 |[39m           [36mif[39m (queueInfo[33m.[39misNextDay) msg [33m+=[39m [32m' (فردا)'[39m[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null

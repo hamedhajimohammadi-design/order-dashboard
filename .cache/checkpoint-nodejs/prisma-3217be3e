@@ -1,0 +1,53 @@
+{
+  "last_reminder": 1767114139470,
+  "cached_at": 1767114137894,
+  "version": "5.16.0",
+  "cli_path": "/var/www/dashboard_temp/node_modules/.bin/prisma",
+  "output": {
+    "product": "prisma",
+    "previous_version": "5.16.0",
+    "checkpoint_version": 4,
+    "local_timestamp_without_timezone": "2025-12-30T18:02:17Z",
+    "current_version": "7.2.0",
+    "current_release_date": 1765983962,
+    "client_event_id": "86b61b06-5a7e-4ac5-8e11-f0c5152e9599",
+    "current_download_url": "https://github.com/prisma/prisma",
+    "package": "prisma",
+    "release_tag": "latest",
+    "install_command": "npm install --save-dev prisma",
+    "schema_providers": [
+      "postgresql"
+    ],
+    "schema_preview_features": [],
+    "schema_generators_providers": [
+      "prisma-client-js"
+    ],
+    "current_changelog_url": "https://github.com/prisma/prisma",
+    "outdated": true,
+    "project_website": "https://prisma.io",
+    "alerts": []
+  },
+  "product": "prisma",
+  "cli_install_type": "local",
+  "local_timestamp": "2025-12-30T21:50:54+01:00",
+  "project_hash": "84ad72db",
+  "cli_path_hash": "3217be3e",
+  "endpoint": "https://checkpoint.prisma.io",
+  "arch": "x64",
+  "os": "linux",
+  "node_version": "v20.19.6",
+  "command": "db push",
+  "schema_providers": [
+    "postgresql"
+  ],
+  "schema_preview_features": [],
+  "schema_generators_providers": [
+    "prisma-client-js"
+  ],
+  "cache_file": "/root/.cache/checkpoint-nodejs/prisma-3217be3e",
+  "cache_duration": 43200000,
+  "remind_duration": 172800000,
+  "timeout": 5000,
+  "unref": true,
+  "child_path": "/var/www/dashboard_temp/node_modules/prisma/build/child"
+}

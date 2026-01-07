@@ -1,0 +1,31 @@
+#!/usr/bin/expect -f
+
+set timeout 900
+set host "185.110.188.77"
+set user "root"
+set password "jdh5kl5txZsr6gDB"
+set remote_dir "~/order-dashboard"
+
+proc upload_file {local_path remote_subpath user host password remote_dir} {
+    spawn scp $local_path $user@$host:$remote_dir/$remote_subpath
+    expect {
+        "password:" { send "$password\r" }
+        "(yes/no" { send "yes\r"; exp_continue }
+        timeout { puts "Timeout uploading $local_path"; exit 1 }
+    }
+    expect eof
+}
+
+upload_file "lib/telegram-bot.ts" "lib/telegram-bot.ts" $user $host $password $remote_dir
+upload_file "app/order-dashboard/page.js" "app/order-dashboard/page.js" $user $host $password $remote_dir
+upload_file "components/UnifiedChatBox.js" "components/UnifiedChatBox.js" $user $host $password $remote_dir
+
+# Run build again
+spawn ssh $user@$host "cd $remote_dir && npm run build && pm2 reload all"
+expect {
+    "password:" { send "$password\r"; exp_continue }
+    "Compiled successfully" { puts "Build OK"; exp_continue }
+    "Online" { puts "PM2 OK"; exp_continue }
+    timeout { puts "Timeout running commands"; exit 1 }
+    eof
+}

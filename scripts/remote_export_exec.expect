@@ -1,0 +1,28 @@
+#!/usr/bin/expect
+set timeout 120
+spawn scp -o StrictHostKeyChecking=no scripts/export-remote-data.ts root@185.110.188.77:/root/order-dashboard/scripts/
+expect {
+  "password:" {
+    send "jdh5kl5txZsr6gDB\r"
+    exp_continue
+  }
+  eof
+}
+
+spawn ssh -o StrictHostKeyChecking=no root@185.110.188.77 "cd /root/order-dashboard && npx tsx scripts/export-remote-data.ts > /root/order-dashboard/remote_data.json"
+expect {
+  "password:" {
+    send "jdh5kl5txZsr6gDB\r"
+    exp_continue
+  }
+  eof
+}
+
+spawn scp -o StrictHostKeyChecking=no root@185.110.188.77:/root/order-dashboard/remote_data.json ./
+expect {
+  "password:" {
+    send "jdh5kl5txZsr6gDB\r"
+    exp_continue
+  }
+  eof
+}

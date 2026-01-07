@@ -1,0 +1,25 @@
+#!/usr/bin/expect -f
+
+set timeout 900
+set host "185.110.188.77"
+set user "root"
+set password "jdh5kl5txZsr6gDB"
+set remote_dir "~/order-dashboard"
+
+# Cleanup legacy files that break build
+spawn ssh $user@$host "rm $remote_dir/lib/bot.ts $remote_dir/lib/session.ts $remote_dir/lib/ai-bot.ts"
+expect {
+    "password:" { send "$password\r"; exp_continue }
+    "No such file" { exp_continue }
+    eof
+}
+
+# Run build again
+spawn ssh $user@$host "cd $remote_dir && npm run build && pm2 reload all"
+expect {
+    "password:" { send "$password\r"; exp_continue }
+    "Compiled successfully" { puts "Build OK"; exp_continue }
+    "Online" { puts "PM2 OK"; exp_continue }
+    timeout { puts "Timeout running commands"; exit 1 }
+    eof
+}

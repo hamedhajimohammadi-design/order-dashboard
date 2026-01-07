@@ -1,0 +1,15 @@
+#!/usr/bin/expect
+# Increase timeout for the script execution
+set timeout 120
+# Do not echo input
+log_user 0
+
+spawn ssh -o StrictHostKeyChecking=no root@185.110.188.77 "cd /root/order-dashboard && npx tsx scripts/export-remote-data.ts"
+expect {
+  "password:" {
+    send "jdh5kl5txZsr6gDB\r"
+    log_user 1
+    exp_continue
+  }
+  eof
+}

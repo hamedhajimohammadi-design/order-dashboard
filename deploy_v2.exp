@@ -1,0 +1,34 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+set host "185.110.188.77"
+set user "root"
+set pass "jdh5kl5txZsr6gDB"
+set remote_dir "/root/order-dashboard"
+
+# 1. Upload lib
+puts "1/3 Uploading lib..."
+spawn scp -r lib $user@$host:$remote_dir
+expect {
+    "yes/no" { send "yes\r"; exp_continue }
+    "password:" { send "$pass\r" }
+}
+expect eof
+
+# 2. Upload app
+puts "2/3 Uploading app..."
+spawn scp -r app $user@$host:$remote_dir
+expect {
+    "yes/no" { send "yes\r"; exp_continue }
+    "password:" { send "$pass\r" }
+}
+expect eof
+
+# 3. Build & Restart
+puts "3/3 Building & Restarting..."
+spawn ssh $user@$host "cd $remote_dir && npm run build && pm2 reload all"
+expect {
+    "yes/no" { send "yes\r"; exp_continue }
+    "password:" { send "$pass\r" }
+}
+expect eof

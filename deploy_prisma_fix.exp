@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+
+set timeout 900
+set host "185.110.188.77"
+set user "root"
+set password "jdh5kl5txZsr6gDB"
+set remote_dir "~/order-dashboard"
+
+spawn scp prisma/schema.prisma $user@$host:$remote_dir/prisma/schema.prisma
+expect {
+    "password:" { send "$password\r" }
+    "(yes/no" { send "yes\r"; exp_continue }
+    timeout { puts "Timeout uploading"; exit 1 }
+}
+expect eof
+
+puts "Schema uploaded."
+
+spawn ssh $user@$host "cd $remote_dir && npx prisma generate && npx prisma db push --accept-data-loss && npm run build && pm2 reload all"
+expect {
+    "password:" { send "$password\r"; exp_continue }
+    "Generated Prisma Client" { puts "Prisma generated"; exp_continue }
+    "The database is now in sync" { puts "DB synced"; exp_continue }
+    "Creating an optimized production build" { puts "Build started..."; exp_continue }
+    "Compiled successfully" { puts "Build successful!"; exp_continue }
+    "Online" { puts "PM2 reloaded"; exp_continue }
+    timeout { puts "Timeout waiting for process"; exit 1 }
+    eof
+}

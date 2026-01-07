@@ -1,0 +1,10 @@
+#!/usr/bin/expect
+set timeout 20
+spawn ssh -o StrictHostKeyChecking=no root@185.110.188.77 "cat /root/order-dashboard/.env"
+expect {
+  "password:" {
+    send "jdh5kl5txZsr6gDB\r"
+    exp_continue
+  }
+  eof
+}

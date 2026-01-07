@@ -1,0 +1,44 @@
+spawn scp lib/sync-helper.ts root@185.110.188.77:~/order-dashboard/lib/sync-helper.ts
+root@185.110.188.77's password: 
+sync-helper.ts                                              0%    0     0.0KB/s   --:-- ETAsync-helper.ts                                            100%   11KB 207.2KB/s   00:00    
+Sync fix uploaded.
+spawn ssh root@185.110.188.77 cd ~/order-dashboard && npm run build && pm2 reload all
+root@185.110.188.77's password: 
+
+> order-dashboard@0.1.0 build
+> next build
+
+⚠ `images.domains` is deprecated in favor of `images.remotePatterns`. Please update next.config.ts to protect your application from malicious users.
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /root/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /root/order-dashboard/package-lock.json
+
+▲ Next.js 16.1.1 (Turbopack)
+- Environments: .env
+- Experiments (use with caution):
+  · optimizePackageImports
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Build started...
+✓ Compiled successfully in 25.0s
+Build successful!
+  Running TypeScript ...
+Failed to compile.
+
+./lib/sync-helper.ts:234:9
+Type error: Type '{ wp_order_id: any; }' is not assignable to type 'OrderWhereUniqueInput'.
+  Type '{ wp_order_id: any; }' is not assignable to type '{ id: number | OrderWp_order_idSourceCompoundUniqueInput; wp_order_id_source: number | OrderWp_order_idSourceCompoundUniqueInput; } & { ...; }'.
+    Type '{ wp_order_id: any; }' is missing the following properties from type '{ id: number | OrderWp_order_idSourceCompoundUniqueInput; wp_order_id_source: number | OrderWp_order_idSourceCompoundUniqueInput; }': id, wp_order_id_source
+
+[0m [90m 232 |[39m
+ [90m 233 |[39m     [36mconst[39m result [33m=[39m [36mawait[39m prisma[33m.[39morder[33m.[39mupsert({
+[31m[1m>[22m[39m[90m 234 |[39m         where[33m:[39m { wp_order_id[33m:[39m order[33m.[39mid }[33m,[39m
+ [90m     |[39m         [31m[1m^[22m[39m
+ [90m 235 |[39m         update[33m:[39m {
+ [90m 236 |[39m             status[33m:[39m newInternalStatus[33m,[39m
+ [90m 237 |[39m             wp_status[33m:[39m order[33m.[39mstatus[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null

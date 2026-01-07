@@ -1,0 +1,91 @@
+spawn ssh root@185.110.188.77 mkdir -p ~/order-dashboard/prisma
+root@185.110.188.77's password: 
+spawn scp prisma/schema.prisma root@185.110.188.77:~/order-dashboard/prisma/schema.prisma
+root@185.110.188.77's password: 
+schema.prisma                                               0%    0     0.0KB/s   --:-- ETAschema.prisma                                             100% 6677    50.8KB/s   00:00    
+Schema uploaded safely.
+spawn ssh root@185.110.188.77 cat ~/order-dashboard/prisma/schema.prisma | grep referral_code
+root@185.110.188.77's password: 
+  referral_code     String?  @unique
+Verification successful
+spawn ssh root@185.110.188.77 cd ~/order-dashboard && npx prisma generate && npx prisma db push --accept-data-loss && npm run build && pm2 reload all
+root@185.110.188.77's password: 
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v5.16.0) to ./node_modules/@prisma/client in 193ms
+
+Start using Prisma Client in Node.js (See: https://pris.ly/d/client)
+```
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
+```
+or start using Prisma Client at the edge (See: https://pris.ly/d/accelerate)
+```
+import { PrismaClient } from '@prisma/client/edge'
+const prisma = new PrismaClient()
+```
+
+See other ways of importing Prisma Client: http://pris.ly/d/importing-client
+
+┌─────────────────────────────────────────────────────────────┐
+│  Deploying your app to serverless or edge functions?        │
+│  Try Prisma Accelerate for connection pooling and caching.  │
+│  https://pris.ly/cli/--accelerate                           │
+└───────────────────────────────────────Prisma generated
+──────────────────────┘
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "pgem_oms", schema "public" at "127.0.0.1:5433"
+
+⚠️  There might be data loss when applying the changes:
+
+  • A unique constraint covering the columns `[referral_code]` on the table `users` will be added. If there are existing duplicate values, this will fail.
+
+
+
+ð  Your database is now in sync with your Prisma schema. Done in 111ms
+
+Running generate... (Use --skip-generate to skip the generators)
+[2K[1A[2K[GRunning generate... - Prisma Client
+[2K[1A[2K[G✔ Generated Prisma Client (v5.16.0) to ./node_modules/@prisma/client in 194ms
+
+Prisma generated
+
+> order-dashboard@0.1.0 build
+> next build
+
+⚠ `images.domains` is deprecated in favor of `images.remotePatterns`. Please update next.config.ts to protect your application from malicious users.
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /root/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /root/order-dashboard/package-lock.json
+
+▲ Next.js 16.1.1 (Turbopack)
+- Environments: .env
+- Experiments (use with caution):
+  · optimizePackageImports
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Build started...
+✓ Compiled successfully in 26.4s
+Build successful!
+  Running TypeScript ...
+Failed to compile.
+
+./lib/telegram-bot.ts:130:34
+Type error: Property 'points' does not exist on type '{ id: number; admin_username: string; admin_password: string; role: string; is_online: boolean; last_active_at: Date; worked_seconds_today: number; display_name: string; daily_quota: number; ... 22 more ...; updated_at: Date; }'.
+
+[0m [90m 128 |[39m   [36mconst[39m msg [33m=[39m [32m`ð **باشگاه مشتریان**\n\n`[39m [33m+[39m
+ [90m 129 |[39m               [32m`ð° موجودی: ${user.diamond_balance} الماس\n`[39m [33m+[39m 
+[31m[1m>[22m[39m[90m 130 |[39m               [32m`⭐️ امتیاز: ${user.points}\n\n`[39m [33m+[39m
+ [90m     |[39m                                  [31m[1m^[22m[39m
+ [90m 131 |[39m               [32m`ð **لینک دعوت اختصاصی شما:**\n\`${inviteLink}\`\n\n`[39m [33m+[39m
+ [90m 132 |[39m               [32m`با دعوت دوستان خود الماس رایگان بگیرید!`[39m[33m;[39m
+ [90m 133 |[39m[0m
+jdh5kl5txZsr6gDB
+Next.js build worker exited with code: 1 and signal: null

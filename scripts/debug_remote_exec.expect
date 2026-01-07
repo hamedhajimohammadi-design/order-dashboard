@@ -1,0 +1,10 @@
+#!/usr/bin/expect
+set timeout 120
+spawn ssh -o StrictHostKeyChecking=no root@185.110.188.77 "cat /root/order-dashboard/remote_data.json"
+expect {
+  "password:" {
+    send "jdh5kl5txZsr6gDB\r"
+    exp_continue
+  }
+  eof
+}

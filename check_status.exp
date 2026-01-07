@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+set timeout 60
+set host "185.110.188.77"
+set user "root"
+set password "jdh5kl5txZsr6gDB"
+
+spawn ssh $user@$host "ls -l --time-style=long-iso ~/order-dashboard/.next/BUILD_ID && pm2 list"
+expect {
+    "password:" { send "$password\r"; exp_continue }
+    eof
+}
