@@ -1,0 +1,47 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+set host "185.110.188.77"
+set user "root"
+set password "Hamed@1366"
+set remote_dir "/var/www/dashboard"
+
+# Function to upload a file
+proc upload_file {local_path remote_subpath host user password remote_dir} {
+    spawn scp -o StrictHostKeyChecking=no $local_path $user@$host:$remote_dir/$remote_subpath
+    expect {
+        "password:" {
+            send "$password\r"
+            exp_continue
+        }
+        eof
+    }
+}
+
+puts "\n⬆️ Uploading app/api/webhook/support/route.ts..."
+upload_file "app/api/webhook/support/route.ts" "app/api/webhook/support/route.ts" $host $user $password $remote_dir
+puts "✅ Uploaded support/route.ts"
+
+puts "\n⬆️ Uploading app/api/external/receive-order/route.ts..."
+upload_file "app/api/external/receive-order/route.ts" "app/api/external/receive-order/route.ts" $host $user $password $remote_dir
+puts "✅ Uploaded receive-order/route.ts"
+
+puts "\n🔨 Re-building..."
+spawn ssh -o StrictHostKeyChecking=no $user@$host "cd $remote_dir && npm run build && pm2 reload all"
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "Build Success" {
+        puts "\n✅ Build Success"
+        exp_continue
+    }
+    timeout {
+        puts "\n❌ Timeout waiting for build"
+        exit 1
+    }
+    eof
+}
+
+puts "\nð Deployment Finished!"
